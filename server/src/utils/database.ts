@@ -19,6 +19,7 @@ import { columns, Exif, Person } from 'src/database';
 import { AssetFileType, AssetVisibility, DatabaseExtension, DatabaseSslMode } from 'src/enum';
 import { AssetSearchBuilderOptions } from 'src/repositories/search.repository';
 import { DB } from 'src/schema';
+import { lockableProperties, LockableProperty } from 'src/schema/tables/asset-exif.table';
 import { DatabaseConnectionParams, VectorExtension } from 'src/types';
 
 type Ssl = 'require' | 'allow' | 'prefer' | 'verify-full' | boolean | object;
@@ -488,3 +489,10 @@ export function vectorIndexQuery({ vectorExtension, table, indexName, lists }: V
     }
   }
 }
+
+export const updateLockedColumns = <T extends Record<string, unknown> & { lockedProperties?: LockableProperty[] }>(
+  exif: T,
+) => {
+  exif.lockedProperties = lockableProperties.filter((property) => property in exif);
+  return exif;
+};

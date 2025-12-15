@@ -5,8 +5,7 @@
   import { getSharedLinkActions } from '$lib/services/shared-link.service';
   import { locale } from '$lib/stores/preferences.store';
   import { SharedLinkType, type SharedLinkResponseDto } from '@immich/sdk';
-  import { ContextMenuButton, Icon, MenuItemType, Text } from '@immich/ui';
-  import { mdiDownload, mdiInformationOutline, mdiLink, mdiLock, mdiUpload } from '@mdi/js';
+  import { ContextMenuButton, MenuItemType, Text } from '@immich/ui';
   import { DateTime, type ToRelativeUnit } from 'luxon';
   import { t } from 'svelte-i18n';
 
@@ -70,26 +69,38 @@
         {/if}
       </div>
 
-      <div class="flex flex-wrap gap-1">
-        {#if sharedLink.slug}
-          <Icon icon={mdiLink} size="18" title={$t('custom_url')} />
-        {/if}
-
-        {#if sharedLink.allowUpload}
-          <Icon icon={mdiUpload} size="18" title={$t('upload')} />
-        {/if}
-
-        {#if sharedLink.showMetadata && sharedLink.allowDownload}
-          <Icon icon={mdiDownload} size="18" title={$t('download')} />
-        {/if}
-
-        {#if sharedLink.showMetadata}
-          <Icon icon={mdiInformationOutline} size="18" title={$t('exif')} />
-        {/if}
-
-        {#if sharedLink.password}
-          <Icon icon={mdiLock} size="18" title={$t('password')} />
-        {/if}
+      <div class="flex flex-wrap items-center gap-2">
+        <Text
+          size="small"
+          color={sharedLink.allowUpload ? 'primary' : 'muted'}
+          class={sharedLink.allowUpload ? 'font-medium' : 'opacity-50'}
+        >
+          {$t('upload')}
+        </Text>
+        <Text size="small" color="muted">•</Text>
+        <Text
+          size="small"
+          color={sharedLink.allowDownload ? 'primary' : 'muted'}
+          class={sharedLink.allowDownload ? 'font-medium' : 'opacity-50'}
+        >
+          {$t('download')}
+        </Text>
+        <Text size="small" color="muted">•</Text>
+        <Text
+          size="small"
+          color={sharedLink.showMetadata ? 'primary' : 'muted'}
+          class={sharedLink.showMetadata ? 'font-medium' : 'opacity-50'}
+        >
+          {$t('exif')}
+        </Text>
+        <Text size="small" color="muted">•</Text>
+        <Text
+          size="small"
+          color={sharedLink.password ? 'primary' : 'muted'}
+          class={sharedLink.password ? 'font-medium' : 'opacity-50'}
+        >
+          {$t('password')}
+        </Text>
       </div>
     </div>
   </svelte:element>
